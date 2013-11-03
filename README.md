@@ -29,7 +29,7 @@ $ cd "~/Library/Application Support/Sublime Text 2/Packages"
 $ git clone https://github.com/joneshf/sublime-grasp
 ```
 
-#### Windows (untested)
+#### Windows
 
 ```
 $ cd "%APPDATA%\Sublime Text 2"
