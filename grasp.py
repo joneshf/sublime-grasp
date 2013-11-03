@@ -55,4 +55,5 @@ class GraspCommand(sublime_plugin.TextCommand):
         and returns an absolute position.
         '''
 
-        return reduce(op.mul, map(int, row_col.split(',')))
+        row, col = map(int, row_col.split(','))
+        return self.view.text_point(row - 1, col)
