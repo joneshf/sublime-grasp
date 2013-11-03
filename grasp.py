@@ -34,7 +34,7 @@ class GraspCommand(sublime_plugin.TextCommand):
 
         # Rip out the lines from our result.
         raw_lines = map(lambda s: ''.join(it.takewhile(lambda r: r != ':', s)),
-                        result.split('\n'))
+                        result.decode().split('\n'))
         # Get rid of blanks.
         lines = filter(None, raw_lines)
         # Build up our selected regions.
