@@ -1,3 +1,4 @@
+from functools import reduce
 import itertools as it
 import operator as op
 from subprocess import PIPE, Popen
