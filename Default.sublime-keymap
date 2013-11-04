@@ -1,6 +1,13 @@
 [
     {
         "keys": ["ctrl+shift+g"],
-        "command": "grasp"
+        "command": "grasp",
+        "context": [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "source.js"
+            }
+        ]
     }
 ]
