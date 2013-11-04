@@ -1,9 +1,12 @@
 # Sublime Grasp
 
-This is simply a wrapper around grasp.
-When it's complete, everything that works for grasp should work from here.
+This is simply a wrapper around [@gkz][gkz]'s [grasp][grasp].
+It was inspired by [@janhancic][janhancic].
 
+When it's complete, everything that works for grasp should work from here.
 At the moment, the only thing that works for sure is searching for things.
+
+You can follow the development of grasp [here][grasp-github].
 
 ## Usage
 
@@ -48,3 +51,8 @@ $ git clone https://github.com/joneshf/sublime-grasp
 ## Contributing
 
 Pretty much anything goes.
+
+[gkz]: https://github.com/gkz
+[grasp]: http://graspjs.com/
+[grasp-github]: https://github.com/gkz/grasp
+[janhancic]: https://github.com/janhancic
