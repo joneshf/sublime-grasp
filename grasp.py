@@ -1,12 +1,10 @@
-from functools import reduce
-import itertools as it
-import operator as op
+from json import loads
 from subprocess import PIPE, Popen
 
 from sublime import platform, Region
-import sublime_plugin
+from sublime_plugin import TextCommand
 
-class GraspCommand(sublime_plugin.TextCommand):
+class GraspCommand(TextCommand):
 
     def run(self, crap):
         self.view.window().show_input_panel('Enter your grasp command', '',
@@ -20,40 +18,41 @@ class GraspCommand(sublime_plugin.TextCommand):
         else:
             command = ['grasp']
 
-        # Need the line/columns, but don't want the color.
-        command.extend(['-n', '-b', '--color=false'])
+        # We're going to want a json object back with tons of data.
+        command.extend(['-j'])
         command.extend(raw_command.split())
         command.append(self.view.file_name())
 
         # Run the command.
-        pipe = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE, bufsize=1)
+        pipe = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
         result, error = pipe.communicate()
 
         # TODO: Handle errors.
-        # TODO: This only seems to return one line,
-        # instead of many as you get when running this form the shell.
 
-        # Rip out the lines from our result.
-        raw_lines = map(lambda s: ''.join(it.takewhile(lambda r: r != ':', s)),
-                        result.decode().split('\n'))
-        # Get rid of blanks.
-        lines = filter(None, raw_lines)
         # Build up our selected regions.
-        for line in lines:
+        if result:
             self.view.sel().clear()
-            raw_start, raw_stop = line.split('-')
-            start = self.raw_to_abs(raw_start)
-            # Off by one.
-            stop = self.raw_to_abs(raw_stop) + 1
-            # Add it to the region.
-            self.view.sel().add(Region(start, stop))
+            for match in loads(result.decode()):
+                start, stop = self.raw_to_abs(match)
+                # Add it to the region.
+                self.view.sel().add(Region(start, stop))
 
-    def raw_to_abs(self, row_col):
+    def raw_to_abs(self, raw):
         '''
-        Takes in a string of the form 'r,c',
-        where r is the row and c is the column,
-        and returns an absolute position.
+        Takes in a dict with grasp metadata,
+        and returns 2-tuple of (start, stop).
+
+        Grasp provides a very nice start and end property with each match.
+        It'd be ideal to use that.
+        Unfortunately, windows uses \r\n for line endings,
+        and sublime may not be set up for that, so it can lead to funky errors.
+        It's easier to parse the row and col and build the values from there.
         '''
 
-        row, col = map(int, row_col.split(','))
-        return self.view.text_point(row - 1, col)
+        raw_start = raw['loc']['start']
+        raw_end = raw['loc']['end']
+
+        s = self.view.text_point(raw_start['line'] - 1, raw_start['column'])
+        e = self.view.text_point(raw_end['line'] - 1, raw_end['column'])
+
+        return s, e
