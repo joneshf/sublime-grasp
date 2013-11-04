@@ -36,6 +36,7 @@ class GraspCommand(TextCommand):
                 start, stop = self.raw_to_abs(match)
                 # Add it to the region.
                 self.view.sel().add(Region(start, stop))
+            self.view.show(self.view.sel()[0])
 
     def raw_to_abs(self, raw):
         '''
