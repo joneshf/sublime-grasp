@@ -45,8 +45,7 @@
                                     "file": "${packages}/User/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 }
-                            },
-                            {"caption": "-"}
+                            }
                         ]
                     }
                 ]
