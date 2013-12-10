@@ -1,3 +1,5 @@
+import os
+
 from json import loads
 from subprocess import PIPE, Popen
 
@@ -21,10 +23,12 @@ class GraspCommand(TextCommand):
         # We're going to want a json object back with tons of data.
         command.extend(['-j'])
         command.extend(raw_command.split())
-        command.append(self.view.file_name())
+        # Grab the cwd and the file.
+        cwd, file_name = os.path.split(self.view.file_name())
+        command.append(file_name)
 
         # Run the command.
-        pipe = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
+        pipe = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=cwd)
         result, error = pipe.communicate()
 
         # TODO: Handle errors.
