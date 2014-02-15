@@ -34,10 +34,10 @@ $ cd ~/.config/sublime-text-2/Packages
 $ git clone https://github.com/joneshf/sublime-grasp
 ```
 
-#### Macosx (untested)
+#### Macosx
 
 ```
-$ cd "~/Library/Application Support/Sublime Text 2/Packages"
+$ cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/
 $ git clone https://github.com/joneshf/sublime-grasp
 ```
 
